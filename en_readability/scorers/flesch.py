@@ -1,4 +1,4 @@
-from readability.exceptions import ReadabilityException
+#from readability.exceptions import ReadabilityException
 
 
 class Result:
@@ -15,8 +15,8 @@ class Result:
 class Flesch:
     def __init__(self, stats):
         self._stats = stats
-        if stats.num_words < 100:
-            raise ReadabilityException('100 words required.')
+        #if stats.num_words < 100:
+        #    raise ReadabilityException('100 words required.')
 
     def score(self):
         score = self._score()
