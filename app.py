@@ -28,6 +28,35 @@ def cleaning(text):
     new_string15 = new_string14.replace('"', '')
     return new_string15
 
+def tabs(default_tabs = [], default_active_tab=0):
+    if not default_tabs:
+        return None
+    active_tab = st.radio("", default_tabs, index=default_active_tab)
+    child = default_tabs.index(active_tab)+1
+    st.markdown("""  
+        <style type="text/css">
+        div[role=radiogroup] > label > div:first-of-type {
+            display: none
+        }
+        div[role=radiogroup] {
+            flex-direction: unset
+        }
+        div[role=radiogroup] label {             
+            border: 1px solid #999;
+            background: #EEE;
+            padding: 8px 24px;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            top: 1px;
+            }
+        div[role=radiogroup] label:nth-child(""" + str(child) + """) {    
+            background: #FFF !important;
+            border-bottom: 1px solid transparent;
+        }            
+        </style>
+    """,unsafe_allow_html=True)        
+    return active_tab
+
 # hide menu bar
 st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
@@ -45,37 +74,7 @@ st.markdown(f""" <style>
     }} </style> """, unsafe_allow_html=True)
 
 # set up tab
-st.markdown(
-    '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">',
-    unsafe_allow_html=True,
-)
-query_params = st.experimental_get_query_params()
-tabs = ["Flesch-Kincaid", "Khadijah-Rohani"]
-if "tab" in query_params:
-    active_tab = query_params["tab"][0]
-else:
-    active_tab = "Flesch-Kincaid"
-
-if active_tab not in tabs:
-    st.experimental_set_query_params(tab="Flesch-Kincaid")
-    active_tab = "Flesch-Kincaid"
-
-li_items = "".join(
-    f"""
-    <li class="nav-item">
-        <a class="nav-link{' active' if t==active_tab else ''}" href="/?tab={t}">{t}</a>
-    </li>
-    """
-    for t in tabs
-)
-tabs_html = f"""
-    <ul class="nav nav-tabs">
-    {li_items}
-    </ul>
-"""
-
-st.markdown(tabs_html, unsafe_allow_html=True)
-st.markdown("<br>", unsafe_allow_html=True)
+active_tab = tabs(["Flesch-Kincaid", "Khadijah-Rohani"])
 
 if active_tab == "Flesch-Kincaid":
     # set up title
